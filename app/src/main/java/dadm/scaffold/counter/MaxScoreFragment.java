@@ -10,25 +10,25 @@ import dadm.scaffold.R;
 import dadm.scaffold.ScaffoldActivity;
 
 
-public class MainMenuFragment extends BaseFragment implements View.OnClickListener {
-    public MainMenuFragment() {
-    }
+public class MaxScoreFragment extends BaseFragment implements View.OnClickListener {
+
+   public MaxScoreFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main_menu, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_max_score, container, false);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.button_start).setOnClickListener(this);
+        view.findViewById(R.id.button_title).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        ((ScaffoldActivity)getActivity()).startGame();
+        ((ScaffoldActivity)getActivity()).goToTitle();
     }
 }

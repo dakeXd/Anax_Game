@@ -25,6 +25,11 @@ public class DrawThread extends Thread {
         resumeGame();
     }
 
+    public void endGame(){
+        isGameRunning = false;
+        isGamePaused = true;
+    }
+
     @Override
     public void run() {
         long elapsedMillis;

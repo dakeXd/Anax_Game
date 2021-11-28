@@ -24,6 +24,11 @@ public class UpdateThread extends Thread {
         resumeGame();
     }
 
+    public void endGame(){
+        isGameRunning = false;
+        isGamePaused = true;
+    }
+
     @Override
     public void run() {
         long previousTimeMillis;

@@ -3,11 +3,15 @@ package dadm.scaffold.engine;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import dadm.scaffold.R;
+import dadm.scaffold.ScaffoldActivity;
+import dadm.scaffold.Score;
 import dadm.scaffold.input.InputController;
 import dadm.scaffold.sound.GameEvent;
 import dadm.scaffold.sound.SoundManager;
@@ -34,10 +38,10 @@ public class GameEngine {
     public double pixelFactor;
 
     private Activity mainActivity;
-
+    private TextView score;
     public GameEngine(Activity activity, GameView gameView) {
         mainActivity = activity;
-
+        score = mainActivity.findViewById(R.id.tv_score);
         theGameView = gameView;
         theGameView.setGameObjects(this.gameObjects);
 
@@ -50,16 +54,24 @@ public class GameEngine {
 
         quadTree.setArea(new Rect(0, 0, width, height));
 
-        this.pixelFactor = this.height / 400d;
+        this.pixelFactor = this.height / 800d;
+
+
     }
 
     public void setTheInputController(InputController inputController) {
         theInputController = inputController;
     }
 
+    public void endGame(){
+        theUpdateThread.endGame();
+        theDrawThread.endGame();
+        ((ScaffoldActivity) mainActivity).endGame();
+    }
     public void startGame() {
         // Stop a game if it is running
         stopGame();
+        Score.resetScore();
 
         // Setup the game objects
         int nugameObjects = gameObjects.size();
@@ -117,6 +129,15 @@ public class GameEngine {
         mainActivity.runOnUiThread(gameObject.onRemovedRunnable);
     }
 
+
+    public void updateScore(){
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                score.setText("Score: " + Score.getScore());
+            }
+        });
+    }
     public void onUpdate(long elapsedMillis) {
         int nugameObjects = gameObjects.size();
         for (int i = 0; i < nugameObjects; i++) {
@@ -128,6 +149,7 @@ public class GameEngine {
         }
         checkCollisions();
         synchronized (gameObjects) {
+
             while (!objectsToRemove.isEmpty()) {
                 GameObject objectToRemove = objectsToRemove.remove(0);
                 gameObjects.remove(objectToRemove);
@@ -183,5 +205,8 @@ public class GameEngine {
         // We notify all the GameObjects
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
+        if(gameEvent.equals(GameEvent.SpaceshipHit)){
+            endGame();
+        }
     }
 }
