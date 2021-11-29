@@ -66,10 +66,12 @@
             app:layout_constraintVertical_bias="0.13999999" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewScore2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="#85A5FFFF"
             android:fontFamily="@font/pixeland"
+            android:padding="8dp"
             android:text="@string/max_scores"
             android:textColor="#630404"
             android:textSize="30dp"

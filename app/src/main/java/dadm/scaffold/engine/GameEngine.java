@@ -39,13 +39,11 @@ public class GameEngine {
     public int height;
     public double pixelFactor;
 
-    private int lastSecond;
 
     private Activity mainActivity;
 
     public GameEngine(Activity activity, GameView gameView) {
         remainingTime = GAME_TIME;
-        lastSecond = -1;
         mainActivity = activity;
 
         theGameView = gameView;
