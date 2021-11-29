@@ -64,7 +64,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void loadPreferences(){
-        String txt_maxScore = "Puntuaciones maximas:\n";
+        String txt_maxScore = "Max Scores:\n";
         for(int i = 1; i <= MAX_SCORES_AMOUNT; i++)
             txt_maxScore += "\n" + i + "- " + preferences.getString("txt_max" + i, "") + " " +  preferences.getString("punt_max" + i, "") + "\n";
         tv_maxScore.setText(txt_maxScore);

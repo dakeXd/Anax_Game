@@ -85,7 +85,7 @@ public class MaxScoreFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void printMaxScores(){
-        String txt_maxScore = "Puntuaciones maximas:\n";
+        String txt_maxScore = "Max Scores:\n";
         for(int i = 1; i <= MainMenuFragment.MAX_SCORES_AMOUNT; i++)
             txt_maxScore += "\n" + i + "- " + preferences.getString("txt_max" + i, "") + " " +  preferences.getString("punt_max" + i, "") + "\n";
         tv_score.setText(txt_maxScore);
