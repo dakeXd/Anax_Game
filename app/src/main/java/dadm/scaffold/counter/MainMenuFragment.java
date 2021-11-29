@@ -1,9 +1,6 @@
 package dadm.scaffold.counter;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +24,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.btn_start).setOnClickListener(this);
+        view.findViewById(R.id.button_start).setOnClickListener(this);
     }
 
     @Override

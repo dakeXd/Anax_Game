@@ -12,8 +12,11 @@ import dadm.scaffold.sound.GameEvent;
 
 public class SpaceShipPlayer extends Sprite {
 
-    private static final int INITIAL_BULLET_POOL_AMOUNT = 6;
-    private static final long TIME_BETWEEN_BULLETS = 250;
+    private static final int INITIAL_BULLET_POOL_AMOUNT = 24;
+    private static long TIME_BETWEEN_BULLETS = 350;
+
+    private float shipOffset;
+    public static int NumBullets = 1;
     List<Bullet> bullets = new ArrayList<Bullet>();
     private long timeSinceLastFire;
 
@@ -23,10 +26,12 @@ public class SpaceShipPlayer extends Sprite {
 
 
     public SpaceShipPlayer(GameEngine gameEngine){
-        super(gameEngine, R.drawable.ship);
+        super(gameEngine, R.drawable.player_ship);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
+        shipOffset = width/6;
+        NumBullets = 1;
 
         initBulletPool(gameEngine);
     }
@@ -80,15 +85,18 @@ public class SpaceShipPlayer extends Sprite {
     }
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
-        if (gameEngine.theInputController.isFiring && timeSinceLastFire > TIME_BETWEEN_BULLETS) {
-            Bullet bullet = getBullet();
-            if (bullet == null) {
-                return;
+        if (/*gameEngine.theInputController.isFiring &&*/ timeSinceLastFire > TIME_BETWEEN_BULLETS) {
+            float offsetStep = width/(NumBullets+1);
+            for(int i = 1; i<=NumBullets;i++) {
+                Bullet bullet = getBullet();
+                if (bullet == null) {
+                    return;
+                }
+                bullet.init(this, shipOffset + positionX + i*offsetStep, positionY);
+                gameEngine.addGameObject(bullet);
+                timeSinceLastFire = 0;
+                gameEngine.onGameEvent(GameEvent.LaserFired);
             }
-            bullet.init(this, positionX + width/2, positionY);
-            gameEngine.addGameObject(bullet);
-            timeSinceLastFire = 0;
-            gameEngine.onGameEvent(GameEvent.LaserFired);
         }
         else {
             timeSinceLastFire += elapsedMillis;

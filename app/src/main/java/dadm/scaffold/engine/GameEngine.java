@@ -3,23 +3,30 @@ package dadm.scaffold.engine;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import dadm.scaffold.R;
+import dadm.scaffold.ScaffoldActivity;
+import dadm.scaffold.Score;
 import dadm.scaffold.input.InputController;
 import dadm.scaffold.sound.GameEvent;
 import dadm.scaffold.sound.SoundManager;
 
 public class GameEngine {
 
+    public static final long GAME_TIME = 60000;
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
     private List<GameObject> objectsToAdd = new ArrayList<GameObject>();
     private List<GameObject> objectsToRemove = new ArrayList<GameObject>();
     private List<Collision> detectedCollisions = new ArrayList<Collision>();
     private QuadTree quadTree = new QuadTree();
 
+    private long remainingTime;
     private UpdateThread theUpdateThread;
     private DrawThread theDrawThread;
     public InputController theInputController;
@@ -33,11 +40,17 @@ public class GameEngine {
     public int height;
     public double pixelFactor;
 
+    private int lastSecond;
+
     private Activity mainActivity;
-
+    private TextView score;
+    private TextView time;
     public GameEngine(Activity activity, GameView gameView) {
+        remainingTime = GAME_TIME;
+        lastSecond = -1;
         mainActivity = activity;
-
+        score = mainActivity.findViewById(R.id.tv_score);
+        time = mainActivity.findViewById(R.id.tv_time);
         theGameView = gameView;
         theGameView.setGameObjects(this.gameObjects);
 
@@ -50,16 +63,24 @@ public class GameEngine {
 
         quadTree.setArea(new Rect(0, 0, width, height));
 
-        this.pixelFactor = this.height / 400d;
+        this.pixelFactor = this.height / 800d;
+
+
     }
 
     public void setTheInputController(InputController inputController) {
         theInputController = inputController;
     }
 
+    public void endGame(){
+        theUpdateThread.endGame();
+        theDrawThread.endGame();
+        ((ScaffoldActivity) mainActivity).endGame();
+    }
     public void startGame() {
         // Stop a game if it is running
         stopGame();
+        Score.resetScore();
 
         // Setup the game objects
         int nugameObjects = gameObjects.size();
@@ -117,6 +138,15 @@ public class GameEngine {
         mainActivity.runOnUiThread(gameObject.onRemovedRunnable);
     }
 
+
+    public void updateScore(){
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                score.setText("Score: " + Score.getScore());
+            }
+        });
+    }
     public void onUpdate(long elapsedMillis) {
         int nugameObjects = gameObjects.size();
         for (int i = 0; i < nugameObjects; i++) {
@@ -128,6 +158,7 @@ public class GameEngine {
         }
         checkCollisions();
         synchronized (gameObjects) {
+
             while (!objectsToRemove.isEmpty()) {
                 GameObject objectToRemove = objectsToRemove.remove(0);
                 gameObjects.remove(objectToRemove);
@@ -140,6 +171,13 @@ public class GameEngine {
                 addGameObjectNow(gameObject);
             }
         }
+        remainingTime -= elapsedMillis;
+        updateTimer();
+        if(remainingTime<=0){
+            Score.destroyed = false;
+            endGame();
+        }
+
     }
 
     public void onDraw() {
@@ -183,5 +221,26 @@ public class GameEngine {
         // We notify all the GameObjects
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
+        if(gameEvent.equals(GameEvent.SpaceshipHit)){
+            Score.destroyed = true;
+            endGame();
+        }
+    }
+
+    public int getTime(){
+        return (int) remainingTime / 1000;
+    }
+
+    public void updateTimer(){
+        int newSecond = getTime();
+        if(lastSecond!=newSecond){
+            lastSecond = newSecond;
+            mainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    time.setText("" + lastSecond);
+                }
+            });
+        }
     }
 }

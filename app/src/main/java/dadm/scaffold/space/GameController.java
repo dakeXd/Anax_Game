@@ -17,7 +17,7 @@ public class GameController extends GameObject {
 
     public GameController(GameEngine gameEngine) {
         // We initialize the pool of items now
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<15; i++) {
             asteroidPool.add(new Asteroid(this, gameEngine));
         }
     }
