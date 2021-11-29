@@ -75,6 +75,7 @@ public class GameEngine {
     public void startGame() {
         // Stop a game if it is running
         stopGame();
+        onGameEvent(GameEvent.PulsarBoton);
         Score.resetScore();
 
         // Setup the game objects

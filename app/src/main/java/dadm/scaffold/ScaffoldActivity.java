@@ -36,6 +36,7 @@ public class ScaffoldActivity extends AppCompatActivity {
 
     public void startGame() {
         // Navigate the the game fragment, which makes the start automatically
+
         soundManager.changeSong(1);
         navigateToFragment( new GameFragment());
     }

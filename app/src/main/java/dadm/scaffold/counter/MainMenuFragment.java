@@ -12,9 +12,12 @@ import android.widget.TextView;
 import dadm.scaffold.BaseFragment;
 import dadm.scaffold.R;
 import dadm.scaffold.ScaffoldActivity;
+import dadm.scaffold.engine.GameEngine;
 
 
 public class MainMenuFragment extends BaseFragment implements View.OnClickListener {
+
+
 
     public static final int MAX_SCORES_AMOUNT = 5;
     private EditText et_nickName;
@@ -55,6 +58,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("nick", nick);
         editor.commit();
+
 
         ((ScaffoldActivity)getActivity()).startGame();
     }
