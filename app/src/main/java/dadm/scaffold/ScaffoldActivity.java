@@ -51,6 +51,18 @@ public class ScaffoldActivity extends AppCompatActivity {
         navigateToFragment( new MainMenuFragment());
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        soundManager.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        soundManager.resume();
+    }
+
     private void navigateToFragment(BaseFragment dst) {
         getSupportFragmentManager()
                 .beginTransaction()

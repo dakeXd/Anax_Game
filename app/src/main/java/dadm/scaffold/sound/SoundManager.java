@@ -18,6 +18,7 @@ public final class SoundManager {
 
 	private String canciones[] = {"sfx/anax_humanity.wav", "sfx/anax_nothumanity.wav"};
 	private int song = 0;
+	private int position = 0;
 
 	private HashMap<GameEvent, Integer> soundsMap;
 	
@@ -105,6 +106,16 @@ public final class SoundManager {
 		song = sang;
 		unloadMusic();
 		loadMusic();
+	}
+
+	public void pause(){
+		position = bgPlayer.getCurrentPosition();
+		bgPlayer.pause();
+	}
+
+	public void resume(){
+		bgPlayer.start();
+		bgPlayer.seekTo(position);
 	}
 
 }

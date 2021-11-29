@@ -59,7 +59,7 @@
             android:padding="8dp"
             android:text="@string/max_scores"
             android:textColor="#981F1F"
-            android:textSize="24dp"
+            android:textSize="30dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
