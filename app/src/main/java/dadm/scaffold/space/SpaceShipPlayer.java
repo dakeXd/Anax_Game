@@ -13,7 +13,7 @@ import dadm.scaffold.sound.GameEvent;
 public class SpaceShipPlayer extends Sprite {
 
     private static final int INITIAL_BULLET_POOL_AMOUNT = 24;
-    private static final long TIME_BETWEEN_BULLETS = 250;
+    private static long TIME_BETWEEN_BULLETS = 350;
 
     private float shipOffset;
     public static int NumBullets = 1;
@@ -85,7 +85,7 @@ public class SpaceShipPlayer extends Sprite {
     }
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
-        if (gameEngine.theInputController.isFiring && timeSinceLastFire > TIME_BETWEEN_BULLETS) {
+        if (/*gameEngine.theInputController.isFiring &&*/ timeSinceLastFire > TIME_BETWEEN_BULLETS) {
             float offsetStep = width/(NumBullets+1);
             for(int i = 1; i<=NumBullets;i++) {
                 Bullet bullet = getBullet();

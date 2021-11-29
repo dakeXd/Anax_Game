@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,12 +19,14 @@ import dadm.scaffold.sound.SoundManager;
 
 public class GameEngine {
 
+    public static final long GAME_TIME = 60000;
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
     private List<GameObject> objectsToAdd = new ArrayList<GameObject>();
     private List<GameObject> objectsToRemove = new ArrayList<GameObject>();
     private List<Collision> detectedCollisions = new ArrayList<Collision>();
     private QuadTree quadTree = new QuadTree();
 
+    private long remainingTime;
     private UpdateThread theUpdateThread;
     private DrawThread theDrawThread;
     public InputController theInputController;
@@ -37,11 +40,17 @@ public class GameEngine {
     public int height;
     public double pixelFactor;
 
+    private int lastSecond;
+
     private Activity mainActivity;
     private TextView score;
+    private TextView time;
     public GameEngine(Activity activity, GameView gameView) {
+        remainingTime = GAME_TIME;
+        lastSecond = -1;
         mainActivity = activity;
         score = mainActivity.findViewById(R.id.tv_score);
+        time = mainActivity.findViewById(R.id.tv_time);
         theGameView = gameView;
         theGameView.setGameObjects(this.gameObjects);
 
@@ -162,6 +171,13 @@ public class GameEngine {
                 addGameObjectNow(gameObject);
             }
         }
+        remainingTime -= elapsedMillis;
+        updateTimer();
+        if(remainingTime<=0){
+            Score.destroyed = false;
+            endGame();
+        }
+
     }
 
     public void onDraw() {
@@ -206,7 +222,25 @@ public class GameEngine {
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
         if(gameEvent.equals(GameEvent.SpaceshipHit)){
+            Score.destroyed = true;
             endGame();
+        }
+    }
+
+    public int getTime(){
+        return (int) remainingTime / 1000;
+    }
+
+    public void updateTimer(){
+        int newSecond = getTime();
+        if(lastSecond!=newSecond){
+            lastSecond = newSecond;
+            mainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    time.setText("" + lastSecond);
+                }
+            });
         }
     }
 }

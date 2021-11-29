@@ -4,13 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import dadm.scaffold.BaseFragment;
 import dadm.scaffold.R;
 import dadm.scaffold.ScaffoldActivity;
+import dadm.scaffold.Score;
 
 
 public class MaxScoreFragment extends BaseFragment implements View.OnClickListener {
+
+    private TextView tv_title;
+    private TextView tv_subtitle;
 
    public MaxScoreFragment(){}
 
@@ -24,7 +29,15 @@ public class MaxScoreFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tv_title =  view.findViewById(R.id.score_title);
+        tv_subtitle =  view.findViewById(R.id.score_subtitle);
         view.findViewById(R.id.button_title).setOnClickListener(this);
+        if(Score.destroyed){
+            tv_title.setText("Your ship has been destroyed");
+        }else{
+            tv_title.setText("You reached the objective");
+        }
+        tv_subtitle.setText("Score: " +Score.getScore());
     }
 
     @Override
