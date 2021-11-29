@@ -49,7 +49,8 @@ public class InterfaceController {
 
     public boolean hitShip(){
         actualLives--;
-        Score.addScore(-1000);
+        Score.addScore(-500);
+        updateScore();
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
