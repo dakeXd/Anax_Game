@@ -85,7 +85,7 @@ public class SpaceShipPlayer extends Sprite {
     }
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
-        if (/*gameEngine.theInputController.isFiring &&*/ timeSinceLastFire > TIME_BETWEEN_BULLETS) {
+        if (gameEngine.theInputController.isFiring && timeSinceLastFire > TIME_BETWEEN_BULLETS) {
             float offsetStep = width/(NumBullets+1);
             for(int i = 1; i<=NumBullets;i++) {
                 Bullet bullet = getBullet();
@@ -106,7 +106,7 @@ public class SpaceShipPlayer extends Sprite {
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
         if (otherObject instanceof Asteroid) {
-            gameEngine.removeGameObject(this);
+            //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
             Asteroid a = (Asteroid) otherObject;
             a.removeObject(gameEngine);

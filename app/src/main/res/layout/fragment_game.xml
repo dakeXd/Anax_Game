@@ -67,6 +67,40 @@
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/life0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/player_ship"
+            app:layout_constraintEnd_toStartOf="@+id/life1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+        <ImageView
+            android:id="@+id/life1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/player_ship"
+            app:layout_constraintEnd_toStartOf="@+id/life2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/life0"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+        <ImageView
+            android:id="@+id/life2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/player_ship"
+            app:layout_constraintEnd_toEndOf="@+id/tv_score"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/life1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

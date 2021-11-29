@@ -3,14 +3,12 @@ package dadm.scaffold.engine;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
-import android.widget.TextView;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import dadm.scaffold.R;
+import dadm.scaffold.InterfaceController;
 import dadm.scaffold.ScaffoldActivity;
 import dadm.scaffold.Score;
 import dadm.scaffold.input.InputController;
@@ -35,6 +33,7 @@ public class GameEngine {
     public Random random = new Random();
 
     private SoundManager soundManager;
+    private InterfaceController interfaceController;
 
     public int width;
     public int height;
@@ -43,17 +42,15 @@ public class GameEngine {
     private int lastSecond;
 
     private Activity mainActivity;
-    private TextView score;
-    private TextView time;
+
     public GameEngine(Activity activity, GameView gameView) {
         remainingTime = GAME_TIME;
         lastSecond = -1;
         mainActivity = activity;
-        score = mainActivity.findViewById(R.id.tv_score);
-        time = mainActivity.findViewById(R.id.tv_time);
+
         theGameView = gameView;
         theGameView.setGameObjects(this.gameObjects);
-
+        interfaceController = new InterfaceController(mainActivity);
         QuadTree.init();
 
         this.width = theGameView.getWidth()
@@ -140,12 +137,7 @@ public class GameEngine {
 
 
     public void updateScore(){
-        mainActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                score.setText("Score: " + Score.getScore());
-            }
-        });
+        interfaceController.updateScore();
     }
     public void onUpdate(long elapsedMillis) {
         int nugameObjects = gameObjects.size();
@@ -172,7 +164,7 @@ public class GameEngine {
             }
         }
         remainingTime -= elapsedMillis;
-        updateTimer();
+        interfaceController.updateTime(getTime());
         if(remainingTime<=0){
             Score.destroyed = false;
             endGame();
@@ -222,25 +214,14 @@ public class GameEngine {
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
         if(gameEvent.equals(GameEvent.SpaceshipHit)){
-            Score.destroyed = true;
-            endGame();
+            if(interfaceController.hitShip()){
+                Score.destroyed = true;
+                endGame();
+            }
         }
     }
 
     public int getTime(){
         return (int) remainingTime / 1000;
-    }
-
-    public void updateTimer(){
-        int newSecond = getTime();
-        if(lastSecond!=newSecond){
-            lastSecond = newSecond;
-            mainActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    time.setText("" + lastSecond);
-                }
-            });
-        }
     }
 }
