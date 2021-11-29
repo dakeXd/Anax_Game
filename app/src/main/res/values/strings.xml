@@ -1,18 +1,17 @@
 <resources>
     <string name="app_name">A.N.A.X</string>
-    <string name="title_activity_main">A.N.A.X</string>
+    <string name="title_activity_main">title</string>
     <string name="hello_world">Hello</string>
-    <string name="pause">Pause</string>
+    <string name="pause">Game paused</string>
     <string name="start">Start game</string>
-    <string name="game_title">A.N.A.X</string>
-    <string name="pause_dialog_title">Game Paused</string>
-    <string name="pause_dialog_message">Restart or Continue?</string>
+    <string name="game_title">game title</string>
+    <string name="pause_dialog_title">pause title</string>
+    <string name="pause_dialog_message">pause message</string>
     <string name="resume">resume</string>
     <string name="menu_start">Main Menu</string>
     <string name="hint_nickanme">INSERT NICKNAME</string>
     <string name="score">SCORE</string>
     <string name="max_scores">Max scores:\n\n\n1-\n\n2-\n\n3-\n\n4-\n\n5-</string>
     <string name="stop">stop</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_nickanme">Escribe tu nombre</string>
 </resources>
