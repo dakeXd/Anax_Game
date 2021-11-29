@@ -16,6 +16,9 @@ public final class SoundManager {
 	private static final int MAX_STREAMS = 10;
 	private static final float DEFAULT_MUSIC_VOLUME = 0.99f;
 
+	private String canciones[] = {"sfx/anax_humanity.wav", "sfx/anax_nothumanity.wav"};
+	private int song = 0;
+
 	private HashMap<GameEvent, Integer> soundsMap;
 	
 	private Context context;
@@ -58,7 +61,7 @@ public final class SoundManager {
 		try {
 			// Important to not reuse it. It can be on a strange state
 			bgPlayer = new MediaPlayer();
-			AssetFileDescriptor afd = context.getAssets().openFd("sfx/Riccardo_Colombo_-_11_-_Something_mental.mp3");
+			AssetFileDescriptor afd = context.getAssets().openFd(canciones[song]);
 			bgPlayer.setDataSource(afd.getFileDescriptor(),
 					afd.getStartOffset(), afd.getLength());
 			bgPlayer.setLooping(true);
@@ -97,4 +100,11 @@ public final class SoundManager {
 		bgPlayer.stop();
 		bgPlayer.release();
 	}
+
+	public void changeSong (int sang){
+		song = sang;
+		unloadMusic();
+		loadMusic();
+	}
+
 }
